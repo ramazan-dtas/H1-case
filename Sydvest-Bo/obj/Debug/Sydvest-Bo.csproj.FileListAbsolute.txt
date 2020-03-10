@@ -1,0 +1,6 @@
+C:\Users\Tec\source\repos\Sydvest-Bo\Sydvest-Bo\bin\Debug\Sydvest-Bo.exe.config
+C:\Users\Tec\source\repos\Sydvest-Bo\Sydvest-Bo\bin\Debug\Sydvest-Bo.exe
+C:\Users\Tec\source\repos\Sydvest-Bo\Sydvest-Bo\bin\Debug\Sydvest-Bo.pdb
+C:\Users\Tec\source\repos\Sydvest-Bo\Sydvest-Bo\obj\Debug\Sydvest-Bo.csprojAssemblyReference.cache
+C:\Users\Tec\source\repos\Sydvest-Bo\Sydvest-Bo\obj\Debug\Sydvest-Bo.exe
+C:\Users\Tec\source\repos\Sydvest-Bo\Sydvest-Bo\obj\Debug\Sydvest-Bo.pdb
