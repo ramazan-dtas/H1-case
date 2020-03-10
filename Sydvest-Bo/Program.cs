@@ -8,69 +8,158 @@ namespace Sydvest_Bo
 {
     class Program
     {
+        public static int ReadLineInt()
+        {
+            //Here it is a security for not write letters 
+            int tal;
+            while (!int.TryParse(Console.ReadLine(), out tal))
+            {
+                Console.WriteLine("Du skal svarer med tal og ikke bogstaver");
+            }
+            return tal;
+        }
         static void Main(string[] args)
         {
-            
+            bool userAllowed = false;
+
+            while (userAllowed == false)
+            {
+                Console.Write("Username: ");
+                string username = Console.ReadLine();
+                Console.Write("Password: ");
+                string password = Console.ReadLine();
+
+                //Check if exists in database
+                if (username == "admin" && password == "admin")
+                {
+                    userAllowed = true;
+                }
+                else
+                {
+                    Console.WriteLine("Username or password incorrect, try again.");
+                    Console.ReadKey();
+                }
+            }
             Console.WriteLine("Sydvest-Bo  - H1 Case");
             Console.SetCursorPosition(30, 15);
-            Console.WriteLine("Er du [ejere], eller vil du [reservere] eller skal du [oprette] sommerhus ");
-            Console.SetCursorPosition(40, 20); 
-            Console.WriteLine("[Vil du søge på sommerhuse]");
-            //Here it will save the input 
+            Console.WriteLine("Are you [Owner], or will you make a [reservation] or will you [create] sommerhus ");
+            Console.SetCursorPosition(40, 20);
+            Console.WriteLine("[will you search on a sommerhus]");
             string svar = Console.ReadLine().ToLower();
+            Console.Clear();
+            //Here it will save the input and make it automatic input lowercase 
 
-            if(svar == "ejere")
+            //here will it check if the input is "ejere"
+            if (svar == "owner")
             {
+                //here i convert the class Sommerhusejere to P1
                 Sommerhusejere p1 = new Sommerhusejere();
-                Console.WriteLine("Vil du oprette, rette eller slette");
-                svar = Console.ReadLine();
-                if(svar == "oprette")
+                Console.WriteLine("will you create, change or delete");
+                //Here i convert the ansver to lower case
+                svar = Console.ReadLine().ToLower();
+                //Here i says if the answer is "oprette" 
+                if (svar == "create")
                 {
                     p1.Opret();
+                    Console.ReadKey();
+                    Console.Clear();
                 }
-
-                if(svar == "rette")
+                //Here i says if the answer is "rette" 
+                if (svar == "change")
                 {
                     p1.Rette();
+                    Console.ReadKey();
+                    Console.Clear();
                 }
-
-                if(svar == "slette")
+                //Here i says if the answer is "slette" 
+                if (svar == "delete")
                 {
                     p1.Slette();
+                    Console.ReadKey();
+                    Console.Clear();
                 }
+                //Here i says if user wants to reserve a house
+                if (svar == "reservation")
+                {
+                    //here i convert the class ResSommerhus to p1
+                    ResSommerhus p2 = new ResSommerhus();
+
+                    Console.WriteLine("will you create, change or delete a reservation");
+                    svar = Console.ReadLine();
+
+                    if (svar == "create")
+                    {
+                        p2.Opret();
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
+
+                    if (svar == "change")
+                    {
+                        p2.Rette();
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
+
+                    if (svar == "delete")
+                    {
+                        p2.Slette();
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
+
+                }
+
+                else if (svar == "create")
+                {
+                    //here i convert the class Sommerhus to p1
+                    Sommerhus p3 = new Sommerhus();
+
+                    Console.WriteLine("will you create, change or delete a summer house");
+                    svar = Console.ReadLine();
+
+                    if (svar == "create")
+                    {
+                        p3.Opret();
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
+
+                    if (svar == "change")
+                    {
+                        p1.Rette();
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
+
+                    if (svar == "delete")
+                    {
+                        p1.Slette();
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
+                }
+
             }
-            
-            if(svar == "reserverer")
+
+            else if (svar == "searching")
             {
-                ResSommerhus p1 = new ResSommerhus();
-
-                Console.WriteLine("Vil du oprette, rette eller slette");
-                svar = Console.ReadLine();
-
-                if(svar == "oprette")
+                Søgning p4 = new Søgning();
+                int svar2;
+                Console.WriteLine("write you zip number to search on a summer house at zip code you want to live in ");
+                //here i say integer svar2 has now the values in ReadLineInt inside him
+                //now it take the input from WriteLine controls if there is letters in it
+                svar2 = ReadLineInt();
+                //Here i saysv if the input is over 1000 and under 9999 it should go up 
+                if (svar2 >= 1000 && svar2 <= 9999)
                 {
-                    p1.Opret();
+                    Console.WriteLine("Jens er sej");
+                    p4.søg();
                 }
-
-                if(svar == "rette")
+                else
                 {
-                    p1.Rette();
-                }
+                    Console.WriteLine("Try again");
 
-                if(svar == "slette")
-                {
-                    p1.Slette();
-                }
-            }
-            if(svar == "søg")
-            {
-                Søgning p1 = new Søgning();
-                Console.WriteLine("Indtast det postnummer du vil søge bolig ");
-                int post = Convert.ToInt32(Console.ReadLine());
-
-                if(post == 2200)
-                {
-                    p1.søg();
                 }
             }
         }
@@ -79,16 +168,22 @@ namespace Sydvest_Bo
             public void Opret()
             {
                 Console.WriteLine("oprette");
+                Console.ReadKey();
+                Console.Clear();
             }
 
             public void Rette()
             {
                 Console.WriteLine("rette");
+                Console.ReadKey();
+                Console.Clear();
             }
 
             public void Slette()
             {
                 Console.WriteLine("slette");
+                Console.ReadKey();
+                Console.Clear();
             }
         }
 
@@ -97,16 +192,22 @@ namespace Sydvest_Bo
             public void Opret()
             {
                 Console.WriteLine("oprettehus");
+                Console.ReadKey();
+                Console.Clear();
             }
 
             public void Rette()
             {
                 Console.WriteLine("rettehus");
+                Console.ReadKey();
+                Console.Clear();
             }
 
             public void Slette()
             {
                 Console.WriteLine("slettehus");
+                Console.ReadKey();
+                Console.Clear();
             }
         }
 
@@ -115,16 +216,22 @@ namespace Sydvest_Bo
             public void Opret()
             {
                 Console.WriteLine("opretteres");
+                Console.ReadKey();
+                Console.Clear();
             }
 
             public void Rette()
             {
                 Console.WriteLine("retteres");
+                Console.ReadKey();
+                Console.Clear();
             }
 
             public void Slette()
             {
                 Console.WriteLine("sletter");
+                Console.ReadKey();
+                Console.Clear();
             }
         }
 
@@ -132,7 +239,7 @@ namespace Sydvest_Bo
         {
             public void søg()
             {
-
+                Console.WriteLine("Det er frederiksberg");
             }
         }
     }
