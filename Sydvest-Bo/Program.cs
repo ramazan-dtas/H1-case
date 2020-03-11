@@ -20,6 +20,7 @@ namespace Sydvest_Bo
         }
         static void Main(string[] args)
         {
+            /*
             bool userAllowed = false;
 
             while (userAllowed == false)
@@ -40,11 +41,13 @@ namespace Sydvest_Bo
                     Console.ReadKey();
                 }
             }
+            */
             Console.WriteLine("Sydvest-Bo  - H1 Case");
             Console.SetCursorPosition(30, 15);
             Console.WriteLine("Are you [Owner], or will you make a [reservation] or will you [create] sommerhus ");
             Console.SetCursorPosition(40, 20);
             Console.WriteLine("[will you search on a sommerhus]");
+
             string svar = Console.ReadLine().ToLower();
             Console.Clear();
             //Here it will save the input and make it automatic input lowercase 
@@ -56,6 +59,8 @@ namespace Sydvest_Bo
                 Sommerhusejere p1 = new Sommerhusejere();
                 Console.WriteLine("will you create, change or delete");
                 //Here i convert the ansver to lower case
+
+
                 svar = Console.ReadLine().ToLower();
                 //Here i says if the answer is "oprette" 
                 if (svar == "create")
@@ -78,6 +83,7 @@ namespace Sydvest_Bo
                     Console.ReadKey();
                     Console.Clear();
                 }
+            }
                 //Here i says if user wants to reserve a house
                 if (svar == "reservation")
                 {
@@ -127,47 +133,47 @@ namespace Sydvest_Bo
 
                     if (svar == "change")
                     {
-                        p1.Rette();
+                        p3.Rette();
                         Console.ReadKey();
                         Console.Clear();
                     }
 
                     if (svar == "delete")
                     {
-                        p1.Slette();
+                        p3.Slette();
                         Console.ReadKey();
                         Console.Clear();
                     }
                 }
 
-            }
+            
 
             else if (svar == "searching")
             {
                 Søgning p4 = new Søgning();
-                int svar2;
-                Console.WriteLine("write you zip number to search on a summer house at zip code you want to live in ");
-                //here i say integer svar2 has now the values in ReadLineInt inside him
-                //now it take the input from WriteLine controls if there is letters in it
-                svar2 = ReadLineInt();
-                //Here i saysv if the input is over 1000 and under 9999 it should go up 
-                if (svar2 >= 1000 && svar2 <= 9999)
-                {
-                    Console.WriteLine("Jens er sej");
-                    p4.søg();
-                }
-                else
-                {
-                    Console.WriteLine("Try again");
-
-                }
+                p4.søg();
             }
         }
         class Sommerhusejere
         {
             public void Opret()
             {
-                Console.WriteLine("oprette");
+                Console.WriteLine("Indtast fornavn: ");
+                string fornavn = Console.ReadLine();
+
+                Console.WriteLine("Indtast efternavn: ");
+                string efternavn = Console.ReadLine();
+
+                Console.WriteLine("Indtast email: ");
+                string email = Console.ReadLine();
+
+                Console.WriteLine("Indtast adresse: ");
+                string adresse = Console.ReadLine();
+
+                Console.WriteLine("indtast postnummer");
+                string postnummer = Console.ReadLine();
+
+                
                 Console.ReadKey();
                 Console.Clear();
             }
@@ -215,7 +221,25 @@ namespace Sydvest_Bo
         {
             public void Opret()
             {
-                Console.WriteLine("opretteres");
+                //When user write zep code it will check if there is only numbers if there is not numbers it will come with error message
+                int Safety;
+                Console.WriteLine("Write you zep code ");
+                Safety = ReadLineInt();
+                //here will it check if the number is higher then 1000 or lower then 9999
+                if (Safety >= 1000 && Safety <= 9999)
+                {
+                    Console.WriteLine("Zep code is correct");
+                }
+                else
+                {
+                    Console.WriteLine("you zep code need to be between 1000 and 9999");
+                    Opret();
+                }
+
+                Console.WriteLine("Write the adress ");
+                string adressAns = Console.ReadLine();
+
+
                 Console.ReadKey();
                 Console.Clear();
             }
@@ -239,7 +263,22 @@ namespace Sydvest_Bo
         {
             public void søg()
             {
-                Console.WriteLine("Det er frederiksberg");
+                int svar2;
+                Console.WriteLine("write you zip number to search on a summer house at zip code you want to live in ");
+                //here i say integer svar2 has now the values in ReadLineInt inside him
+                //now it take the input from WriteLine controls if there is letters in it
+                svar2 = ReadLineInt();
+                //Here i saysv if the input is over 1000 and under 9999 it should go up 
+                if (svar2 >= 1000 && svar2 <= 9999)
+                {
+                    Console.WriteLine("Jens er sej");
+                    
+                }
+                else
+                {
+                    Console.WriteLine("Try again");
+
+                }
             }
         }
     }
