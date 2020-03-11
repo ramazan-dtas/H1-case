@@ -17,7 +17,7 @@
     },
     "database": "MSSQL",
     "databaseName": "",
-    "canvasType": "List",
+    "canvasType": "ERD",
     "language": "graphql",
     "tableCase": "pascalCase",
     "columnCase": "camelCase"
@@ -669,29 +669,6 @@
               "widthDataType": 60,
               "widthDefault": 60
             }
-          },
-          {
-            "name": "status",
-            "comment": "0 for free, 1 for taken",
-            "dataType": "int",
-            "default": "0",
-            "id": "59b5062a-1fcd-4c98-bd28-818fb982b3ca",
-            "option": {
-              "autoIncrement": false,
-              "primaryKey": false,
-              "unique": false,
-              "notNull": true
-            },
-            "ui": {
-              "active": false,
-              "pk": false,
-              "fk": false,
-              "pfk": false,
-              "widthName": 60,
-              "widthComment": 123,
-              "widthDataType": 60,
-              "widthDefault": 60
-            }
           }
         ],
         "id": "b09f386b-b605-474c-903c-9d44dcd5981d",
@@ -785,8 +762,8 @@
           "columnIds": [
             "ea93219f-edc8-4793-87c8-9cdc0767d3af"
           ],
-          "x": 751.5800127441411,
-          "y": 331.63999941406246,
+          "x": 748.5800127441411,
+          "y": 309.13999941406246,
           "direction": "bottom"
         },
         "end": {
@@ -818,7 +795,7 @@
             "b9e9acc0-9f31-4bf8-8a1c-bb9d0bb1c656"
           ],
           "x": 534.0800127441411,
-          "y": 146.38999941406246,
+          "y": 140.76499941406246,
           "direction": "left"
         }
       },
@@ -864,7 +841,7 @@
             "2692be85-3448-4c32-8e41-8af9e6222826"
           ],
           "x": 534.0800127441411,
-          "y": 269.88999941406246,
+          "y": 253.01499941406246,
           "direction": "left"
         }
       },
@@ -886,8 +863,8 @@
           "columnIds": [
             "2a8fa051-d5ab-47c4-aa38-5449edee7877"
           ],
-          "x": 969.0800127441411,
-          "y": 208.13999941406246,
+          "x": 963.0800127441411,
+          "y": 196.88999941406246,
           "direction": "right"
         }
       },

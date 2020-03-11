@@ -4,3 +4,14 @@ C:\Users\Tec\source\repos\Sydvest-Bo\Sydvest-Bo\bin\Debug\Sydvest-Bo.pdb
 C:\Users\Tec\source\repos\Sydvest-Bo\Sydvest-Bo\obj\Debug\Sydvest-Bo.csprojAssemblyReference.cache
 C:\Users\Tec\source\repos\Sydvest-Bo\Sydvest-Bo\obj\Debug\Sydvest-Bo.exe
 C:\Users\Tec\source\repos\Sydvest-Bo\Sydvest-Bo\obj\Debug\Sydvest-Bo.pdb
+C:\Users\Tec\source\repos\H1Case\Sydvest-Bo\bin\Debug\Sydvest-Bo.exe.config
+C:\Users\Tec\source\repos\H1Case\Sydvest-Bo\bin\Debug\Sydvest-Bo.exe
+C:\Users\Tec\source\repos\H1Case\Sydvest-Bo\bin\Debug\Sydvest-Bo.pdb
+C:\Users\Tec\source\repos\H1Case\Sydvest-Bo\obj\Debug\Sydvest-Bo.csprojAssemblyReference.cache
+C:\Users\Tec\source\repos\H1Case\Sydvest-Bo\obj\Debug\Sydvest-Bo.exe
+C:\Users\Tec\source\repos\H1Case\Sydvest-Bo\obj\Debug\Sydvest-Bo.pdb
+C:\Users\Tec\source\repos\H1Case\Sydvest-Bo\bin\Debug\Dapper.dll
+C:\Users\Tec\source\repos\H1Case\Sydvest-Bo\bin\Debug\Dapper.xml
+C:\Users\Tec\source\repos\H1Case\Sydvest-Bo\obj\Debug\Sydvest-Bo.csproj.CopyComplete
+C:\Users\Tec\source\repos\H1Case\Sydvest-Bo\bin\Debug\ConsoleTables.dll
+C:\Users\Tec\source\repos\H1Case\Sydvest-Bo\bin\Debug\ConsoleTables.pdb

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Sydvest_Bo.Models;
 
 namespace Sydvest_Bo
 {
@@ -20,6 +22,21 @@ namespace Sydvest_Bo
         }
         static void Main(string[] args)
         {
+            string connetionString = @"Data Source=localhost;Initial Catalog=SydvestBo;User ID=SKAB1-PC-08\Tec;Password=;Integrated Security=true";
+            SqlConnection conn = new SqlConnection(connetionString);
+            try
+            {
+                DataAccess db = new DataAccess();
+
+                //db.InsertConsultant(new Consultant { name = "Josh Dun" });
+                Display.WriteTable(db.GetConsultants("jos"));
+            } 
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            Console.ReadKey();
             /*
             bool userAllowed = false;
 
