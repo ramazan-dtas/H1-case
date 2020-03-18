@@ -50,10 +50,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\HouseOwner.cs" />
     <Compile Include="DataAccess.cs" />
     <Compile Include="Display.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Models\Consultant.cs" />
+    <Compile Include="Models\House.cs" />
+    <Compile Include="Models\HouseOwner.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

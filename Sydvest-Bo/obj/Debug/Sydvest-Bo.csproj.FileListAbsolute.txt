@@ -15,3 +15,15 @@ C:\Users\Tec\source\repos\H1Case\Sydvest-Bo\bin\Debug\Dapper.xml
 C:\Users\Tec\source\repos\H1Case\Sydvest-Bo\obj\Debug\Sydvest-Bo.csproj.CopyComplete
 C:\Users\Tec\source\repos\H1Case\Sydvest-Bo\bin\Debug\ConsoleTables.dll
 C:\Users\Tec\source\repos\H1Case\Sydvest-Bo\bin\Debug\ConsoleTables.pdb
+C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\bin\Debug\Sydvest-Bo.exe.config
+C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\bin\Debug\Sydvest-Bo.exe
+C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\bin\Debug\Sydvest-Bo.pdb
+C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\bin\Debug\ConsoleTables.dll
+C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\bin\Debug\Dapper.dll
+C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\bin\Debug\ConsoleTables.pdb
+C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\bin\Debug\Dapper.xml
+C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\obj\Debug\Sydvest-Bo.csprojAssemblyReference.cache
+C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\obj\Debug\Sydvest-Bo.csproj.CoreCompileInputs.cache
+C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\obj\Debug\Sydvest-Bo.csproj.CopyComplete
+C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\obj\Debug\Sydvest-Bo.exe
+C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\obj\Debug\Sydvest-Bo.pdb

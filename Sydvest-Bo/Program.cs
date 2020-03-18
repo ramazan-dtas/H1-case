@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Sydvest_Bo.Models;
+using Sydvest_Bo.Classes;
 
 namespace Sydvest_Bo
 {
@@ -26,10 +27,10 @@ namespace Sydvest_Bo
             SqlConnection conn = new SqlConnection(connetionString);
             try
             {
-                DataAccess db = new DataAccess();
+                //DataAccess db = new DataAccess();
 
                 //db.InsertConsultant(new Consultant { name = "Josh Dun" });
-                Display.WriteTable(db.GetConsultants("jos"));
+                //Display.WriteTable(DataAccess.Consultants.Get(""));
             } 
             catch (Exception e)
             {
@@ -59,154 +60,254 @@ namespace Sydvest_Bo
                 }
             }
             */
-            Console.WriteLine("Sydvest-Bo  - H1 Case");
-            Console.SetCursorPosition(30, 15);
-            Console.WriteLine("Are you [Owner], or will you make a [reservation] or will you [create] sommerhus ");
-            Console.SetCursorPosition(40, 20);
-            Console.WriteLine("[will you search on a sommerhus]");
+            Console.WriteLine("Sydvest-Bo  - H1 Case\n");
+            Console.WriteLine("[Summer Houses] [House Owners] [Reservations] [Areas] [Seasons] [Inspectors]");
 
-            string svar = Console.ReadLine().ToLower();
-            Console.Clear();
             //Here it will save the input and make it automatic input lowercase 
-
-            //here will it check if the input is "ejere"
-            if (svar == "owner")
-            {
-                //here i convert the class Sommerhusejere to P1
-                Sommerhusejere p1 = new Sommerhusejere();
-                Console.WriteLine("will you create, change or delete");
-                //Here i convert the ansver to lower case
-
-
-                svar = Console.ReadLine().ToLower();
-                //Here i says if the answer is "oprette" 
-                if (svar == "create")
-                {
-                    p1.Opret();
-                    Console.ReadKey();
-                    Console.Clear();
-                }
-                //Here i says if the answer is "rette" 
-                if (svar == "change")
-                {
-                    p1.Rette();
-                    Console.ReadKey();
-                    Console.Clear();
-                }
-                //Here i says if the answer is "slette" 
-                if (svar == "delete")
-                {
-                    p1.Slette();
-                    Console.ReadKey();
-                    Console.Clear();
-                }
-            }
-                //Here i says if user wants to reserve a house
-                if (svar == "reservation")
-                {
-                    //here i convert the class ResSommerhus to p1
-                    ResSommerhus p2 = new ResSommerhus();
-
-                    Console.WriteLine("will you create, change or delete a reservation");
-                    svar = Console.ReadLine();
-
-                    if (svar == "create")
-                    {
-                        p2.Opret();
-                        Console.ReadKey();
-                        Console.Clear();
-                    }
-
-                    if (svar == "change")
-                    {
-                        p2.Rette();
-                        Console.ReadKey();
-                        Console.Clear();
-                    }
-
-                    if (svar == "delete")
-                    {
-                        p2.Slette();
-                        Console.ReadKey();
-                        Console.Clear();
-                    }
-
-                }
-
-                else if (svar == "create")
-                {
-                    //here i convert the class Sommerhus to p1
-                    Sommerhus p3 = new Sommerhus();
-
-                    Console.WriteLine("will you create, change or delete a summer house");
-                    svar = Console.ReadLine();
-
-                    if (svar == "create")
-                    {
-                        p3.Opret();
-                        Console.ReadKey();
-                        Console.Clear();
-                    }
-
-                    if (svar == "change")
-                    {
-                        p3.Rette();
-                        Console.ReadKey();
-                        Console.Clear();
-                    }
-
-                    if (svar == "delete")
-                    {
-                        p3.Slette();
-                        Console.ReadKey();
-                        Console.Clear();
-                    }
-                }
-
+            string answer = Console.ReadLine().ToLower();
+            Console.Clear();
             
-
-            else if (svar == "searching")
+            if (answer == "summer houses")
             {
-                Søgning p4 = new Søgning();
-                p4.søg();
-            }
-        }
-        class Sommerhusejere
-        {
-            public void Opret()
-            {
-                Console.WriteLine("Indtast fornavn: ");
-                string fornavn = Console.ReadLine();
+                Console.WriteLine("[View] [Change] [Create] [Delete]");
 
-                Console.WriteLine("Indtast efternavn: ");
-                string efternavn = Console.ReadLine();
-
-                Console.WriteLine("Indtast email: ");
-                string email = Console.ReadLine();
-
-                Console.WriteLine("Indtast adresse: ");
-                string adresse = Console.ReadLine();
-
-                Console.WriteLine("indtast postnummer");
-                string postnummer = Console.ReadLine();
-
+                string action = Console.ReadLine().ToLower();
+                if (action == "view")
+                {
+                    string searchRes = "";
+                    while (searchRes != "y" && searchRes != "n")
+                    {
+                        Console.Write("Would you like to search for a specific house? (Y/N): ");
+                        searchRes = Console.ReadLine().ToLower();
+                    }
+                    if (searchRes == "y")
+                    {
+                        //Make a search
+                    }
+                    else if (searchRes == "n")
+                    {
+                        //Show everything
+                    }
+                }
                 
-                Console.ReadKey();
-                Console.Clear();
+                if (action == "change")
+                {
+
+                }
+                
+                if (action == "create")
+                {
+
+                }
+                 
+                if (action == "delete")
+                {
+
+                }
+            }
+            //User wants to manipulate the reservations
+            if (answer == "house owners")
+            {
+                Console.WriteLine("[View] [Change] [Create] [Delete]");
+                string action = Console.ReadLine().ToLower();
+
+                if (action == "view")
+                {
+                    string searchRes = "";
+                    while (searchRes != "y" && searchRes != "n")
+                    {
+                        Console.Write("Would you like to search for a specific house owner? (Y/N): ");
+                        searchRes = Console.ReadLine().ToLower();
+                    }
+                    if (searchRes == "y")
+                    {
+                        //Make a search
+                    }
+                    else if (searchRes == "n")
+                    {
+                        //Show everything
+                    }
+                }
+
+                if (action == "change")
+                {
+
+                }
+
+                if (action == "create")
+                {
+
+                }
+
+                if (action == "delete")
+                {
+
+                }
+
             }
 
-            public void Rette()
+            //User wants to manipulate the areas
+            if (answer == "areas")
             {
-                Console.WriteLine("rette");
-                Console.ReadKey();
-                Console.Clear();
+                Console.WriteLine("[View] [Change] [Create] [Delete]");
+                string action = Console.ReadLine().ToLower();
+
+                if (action == "view")
+                {
+                    string searchRes = "";
+                    while (searchRes != "y" && searchRes != "n")
+                    {
+                        Console.Write("Would you like to search for a specific area? (Y/N): ");
+                        searchRes = Console.ReadLine().ToLower();
+                    }
+                    if (searchRes == "y")
+                    {
+                        //Make a search
+                    }
+                    else if (searchRes == "n")
+                    {
+                        //Show everything
+                    }
+                }
+
+                if (action == "change")
+                {
+
+                }
+
+                if (action == "create")
+                {
+
+                }
+
+                if (action == "delete")
+                {
+
+                }
+
             }
 
-            public void Slette()
+            //User wants to manipulate the reservations
+            if (answer == "reservations")
             {
-                Console.WriteLine("slette");
-                Console.ReadKey();
-                Console.Clear();
+                Console.WriteLine("[View] [Change] [Create] [Delete]");
+                string action = Console.ReadLine().ToLower();
+
+                if (action == "view")
+                {
+                    string searchRes = "";
+                    while (searchRes != "y" && searchRes != "n")
+                    {
+                        Console.Write("Would you like to search for a specific reservation? (Y/N): ");
+                        searchRes = Console.ReadLine().ToLower();
+                    }
+                    if (searchRes == "y")
+                    {
+                        //Make a search
+                    }
+                    else if (searchRes == "n")
+                    {
+                        //Show everything
+                    }
+                }
+
+                if (action == "change")
+                {
+
+                }
+
+                if (action == "create")
+                {
+
+                }
+
+                if (action == "delete")
+                {
+                    
+                }
+
+            }
+
+            //User wants to manipulate the seasons & prices
+            if (answer == "seasons")
+            {
+                Console.WriteLine("[View] [Change] [Create] [Delete]");
+                string action = Console.ReadLine().ToLower();
+
+                if (action == "view")
+                {
+                    string searchRes = "";
+                    while (searchRes != "y" && searchRes != "n")
+                    {
+                        Console.Write("Would you like to search for a specific season? (Y/N): ");
+                        searchRes = Console.ReadLine().ToLower();
+                    }
+                    if (searchRes == "y")
+                    {
+                        //Make a search
+                    }
+                    else if (searchRes == "n")
+                    {
+                        //Show everything
+                    }
+                }
+
+                if (action == "change")
+                {
+
+                }
+
+                if (action == "create")
+                {
+
+                }
+
+                if (action == "delete")
+                {
+
+                }
+
+            }
+
+            //User wants to manipulate the seasons & prices
+            if (answer == "inspectors")
+            {
+                Console.WriteLine("[View] [Change] [Create] [Delete]");
+                string action = Console.ReadLine().ToLower();
+
+                if (action == "view")
+                {
+                    string searchRes = "";
+                    while (searchRes != "y" && searchRes != "n")
+                    {
+                        Console.Write("Would you like to search for a specific inspector? (Y/N): ");
+                        searchRes = Console.ReadLine().ToLower();
+                    }
+                    if (searchRes == "y")
+                    {
+                        //Make a search
+                    }
+                    else if (searchRes == "n")
+                    {
+                        //Show everything
+                    }
+                }
+
+                if (action == "change")
+                {
+
+                }
+
+                if (action == "create")
+                {
+
+                }
+
+                if (action == "delete")
+                {
+
+                }
+
             }
         }
 
