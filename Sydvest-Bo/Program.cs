@@ -23,7 +23,7 @@ namespace Sydvest_Bo
         }
         static void Main(string[] args)
         {
-            string connetionString = @"Data Source=localhost;Initial Catalog=SydvestBo;User ID=SKAB1-PC-08\Tec;Password=;Integrated Security=true";
+            string connetionString = @"Data Source=localhost;Initial Catalog=Sydvest Bo;User ID=DESKTOP-G8VN2QF\drama;Password=;Integrated Security=true";
             SqlConnection conn = new SqlConnection(connetionString);
             try
             {
@@ -92,17 +92,113 @@ namespace Sydvest_Bo
                 
                 if (action == "change")
                 {
+                    string ChangeAns = "";
+                    while (ChangeAns != "y" && ChangeAns != "n")
+                    {
+                        Console.Write("What will you change? ");
+                        ChangeAns = Console.ReadLine().ToLower();
+                    }
+
+                    if (ChangeAns == "y")
+                    {
+                        if (ChangeAns == "address")
+                        {
+                            //Changing address
+                        }
+                        if (ChangeAns == "name")
+                        {
+                            //Changing house name
+                        }
+                        if (ChangeAns == "area")
+                        {
+                            //Changing area
+                        }
+                        if (ChangeAns == "owner")
+                        {
+                            //Changing house owner
+                        }
+                        if (ChangeAns == "inspector")
+                        {
+                            //Changing inspector
+                        }
+                        if (ChangeAns == "standard")
+                        {
+                            //Changing standard
+                        }
+                    }
+                    if(ChangeAns == "n")
+                    {
+                        //if user press n
+                    }
 
                 }
                 
                 if (action == "create")
                 {
+                    string ChangeAns = "";
+                    while (ChangeAns != "y" && ChangeAns != "n")
+                    {
+                        Console.Write("Will you create a house? ");
+                        ChangeAns = Console.ReadLine().ToLower();
+                    }
 
+                    if (ChangeAns == "y")
+                    {
+                        if (ChangeAns == "address")
+                        {
+                            //Changing address
+                        }
+                        if (ChangeAns == "name")
+                        {
+                            //Changing house name
+                        }
+                        if (ChangeAns == "area")
+                        {
+                            //Changing area
+                        }
+                        if (ChangeAns == "owner")
+                        {
+                            //Changing house owner
+                        }
+                        if (ChangeAns == "inspector")
+                        {
+                            //Changing inspector
+                        }
+                        if (ChangeAns == "standard")
+                        {
+                            //Changing standard
+                        }
+                    }
+                    if (ChangeAns == "n")
+                    {
+                        //if user press n
+                    }
                 }
                  
                 if (action == "delete")
                 {
+                    string ChangeAns = "";
+                    while (ChangeAns != "y" && ChangeAns != "n")
+                    {
+                        Console.Write("Will you delete a house? ");
+                        ChangeAns = Console.ReadLine().ToLower();
+                    }
 
+                    if (ChangeAns == "y")
+                    {
+                        if (ChangeAns == "address")
+                        {
+                            //Changing address
+                        }
+                        if (ChangeAns == "name")
+                        {
+                            //Changing house name
+                        }
+                    }
+                    if (ChangeAns == "n")
+                    {
+                        //if user press n
+                    }
                 }
             }
             //User wants to manipulate the reservations

@@ -27,3 +27,15 @@ C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\obj\Debug\Sydvest-Bo.
 C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\obj\Debug\Sydvest-Bo.csproj.CopyComplete
 C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\obj\Debug\Sydvest-Bo.exe
 C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\obj\Debug\Sydvest-Bo.pdb
+C:\Users\drama\OneDrive\Skrivebord\H1-case\Sydvest-Bo\bin\Debug\Sydvest-Bo.exe.config
+C:\Users\drama\OneDrive\Skrivebord\H1-case\Sydvest-Bo\bin\Debug\Sydvest-Bo.exe
+C:\Users\drama\OneDrive\Skrivebord\H1-case\Sydvest-Bo\bin\Debug\Sydvest-Bo.pdb
+C:\Users\drama\OneDrive\Skrivebord\H1-case\Sydvest-Bo\bin\Debug\ConsoleTables.dll
+C:\Users\drama\OneDrive\Skrivebord\H1-case\Sydvest-Bo\bin\Debug\Dapper.dll
+C:\Users\drama\OneDrive\Skrivebord\H1-case\Sydvest-Bo\bin\Debug\ConsoleTables.pdb
+C:\Users\drama\OneDrive\Skrivebord\H1-case\Sydvest-Bo\bin\Debug\Dapper.xml
+C:\Users\drama\OneDrive\Skrivebord\H1-case\Sydvest-Bo\obj\Debug\Sydvest-Bo.csprojAssemblyReference.cache
+C:\Users\drama\OneDrive\Skrivebord\H1-case\Sydvest-Bo\obj\Debug\Sydvest-Bo.csproj.CoreCompileInputs.cache
+C:\Users\drama\OneDrive\Skrivebord\H1-case\Sydvest-Bo\obj\Debug\Sydvest-Bo.csproj.CopyComplete
+C:\Users\drama\OneDrive\Skrivebord\H1-case\Sydvest-Bo\obj\Debug\Sydvest-Bo.exe
+C:\Users\drama\OneDrive\Skrivebord\H1-case\Sydvest-Bo\obj\Debug\Sydvest-Bo.pdb
