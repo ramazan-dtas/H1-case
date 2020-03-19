@@ -8,12 +8,13 @@ namespace Sydvest_Bo.Models
 {
     public class Week
     {
-        public int number { get; set; }
+        public int id { get; set; }
+        public int weekNum { get; set; }
         public int seasonId { get; set; } //Reference to SeasonPrices table
 
         public string[] ToArray()
         {
-            string[] arr = { number.ToString(), seasonId.ToString() };
+            string[] arr = { id.ToString(), weekNum.ToString(), seasonId.ToString() };
             return arr;
         }
     }

@@ -8,6 +8,7 @@ namespace Sydvest_Bo.Models
 {
     public class Reservation
     {
+        public string id { get; set; }
         public DateTime start_date { get; set; }
         public DateTime end_date { get; set; }
         public int house_id { get; set; } //Reference to Houses table
@@ -15,7 +16,7 @@ namespace Sydvest_Bo.Models
 
         public string[] ToArray()
         {
-            string[] arr = { start_date.ToString(), end_date.ToString(), house_id.ToString(), guest_name.ToString() };
+            string[] arr = { id.ToString(), start_date.ToString(), end_date.ToString(), house_id.ToString(), guest_name.ToString() };
             return arr;
         }
     }

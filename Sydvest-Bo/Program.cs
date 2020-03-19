@@ -6,21 +6,236 @@ using System.Text;
 using System.Threading.Tasks;
 using Sydvest_Bo.Models;
 using System.Configuration;
+using System.Reflection;
+using Sydvest_Bo.Classes;
 
 namespace Sydvest_Bo
 {
     class Program
     {
-        public static int ReadLineInt()
+        //Shows a list of matched elements in a given table
+        public static void View (object obj, string tableName)
         {
-            //Here it is a security for not write letters 
-            int tal;
-            while (!int.TryParse(Console.ReadLine(), out tal))
+            DbAccess dbConn = new DbAccess();
+
+            string searchRes = "";
+            while (searchRes != "y" && searchRes != "n") //Will loop until an answer is given (Y/N)
             {
-                Console.WriteLine("Du skal svarer med tal og ikke bogstaver");
+                Console.Write("Would you like to filter your search? (Y/N): ");
+                searchRes = Console.ReadLine().ToLower();
             }
-            return tal;
+            if (searchRes == "y") //Search with filter
+            {
+                Console.Write("Insert the search text: ");
+                string searchTxt = Console.ReadLine();
+                Display.WriteTable(dbConn.GetList(obj, tableName, searchTxt));
+            }
+            else if (searchRes == "n") //No filter, display all elements
+            {
+                Display.WriteTable(dbConn.GetList(obj, tableName, ""));
+            }
         }
+
+        //Adds a new entry to a given table
+        public static void Create (object obj, string tableName)
+        {
+            DbAccess dbConn = new DbAccess();
+
+            PropertyInfo[] props = obj.GetType().GetProperties();
+
+            foreach (PropertyInfo prop in props)
+            {
+                if (prop.Name != "id")
+                {
+                    Console.Write($"{prop.Name}: ");
+
+                    var propType = obj.GetType().GetProperty(prop.Name).PropertyType.Name;
+
+                    if (propType == "String")
+                        obj.GetType().GetProperty(prop.Name).SetValue(obj, Console.ReadLine());
+                    else if (propType == "Int32")
+                        obj.GetType().GetProperty(prop.Name).SetValue(obj, Convert.ToInt32(Console.ReadLine()));
+                    else if (propType == "Double")
+                        obj.GetType().GetProperty(prop.Name).SetValue(obj, Convert.ToDouble(Console.ReadLine()));
+                    else if (propType == "DateTime")
+                    {
+                        //Handle datetimes
+                    }
+                }
+            }
+
+            dbConn.CreateObj(obj, tableName);
+        }
+
+        //Updates an entry in a given table
+        public static void Update (object obj, string tableName)
+        {
+            DbAccess dbConn = new DbAccess();
+
+            bool confirmed = false;
+            while (!confirmed)
+            {
+                Console.Write("Please insert a unique identifier for the change: ");
+                string searchTxt = Console.ReadLine();
+
+                try
+                {
+                    //Gets a list of any entries where a field matches the searchTxt
+                    List<dynamic> entries = dbConn.GetList(obj, tableName, searchTxt);
+
+                    if (entries.Count() < 1) //No entries found
+                    {
+                        Console.WriteLine("No entries matched the filter...");
+                    }
+                    else if (entries.Count() > 1) //no single match
+                    {
+                        Console.Clear();
+                        Display.WriteTable(entries);
+                        Console.WriteLine($"Your query returned {entries.Count()} entries...");
+                    }
+                    else //All good - a single match
+                    {
+                        confirmed = true;
+
+                        Console.WriteLine("All object props here");
+
+                        PropertyInfo[] props = obj.GetType().GetProperties();
+                        
+                        //Gets the desired property to be changed - Will loop until the user exists
+                        string propToChange = "";
+                        while (true)
+                        {
+                            Console.Write("Which property would you like to change? (type 'exit' to exit the loop): ");
+                            propToChange = Console.ReadLine();
+
+                            if (propToChange == "exit") { break; } //Breaks out of the loop if the user types 'exit'
+
+                            if (propToChange != "id") //Checks if the user is trying to update the 'id'
+                            {
+                                if (Array.Find(props, x => x.Name == propToChange) != null) //Property exists and is not 'id' - all good
+                                {
+                                    //Gets the new value for the object property
+                                    Console.Write($"Insert the new value for {propToChange}: ");
+                                    string newVal = Console.ReadLine();
+
+                                    var d = (IDictionary<string, object>)entries.FirstOrDefault();
+                                    obj.GetType().GetProperty(propToChange).SetValue(obj, newVal);
+
+                                    dynamic newObj = obj;
+
+
+                                    newObj.id = Convert.ToInt32(d["id"]);
+
+                                    //Attempts to update the object in the Db
+                                    if(!dbConn.ChangeObj(newObj, tableName)) //Update failed
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine("Something went wrong. Make sure the foreign keys being updated do exist in the other tables...");
+                                    }
+                                    else //Update succeded
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine($"'{propToChange}' successfully updated to '{newVal}'!");
+                                        obj = newObj;
+                                    }
+                                }
+                                else //Property not found
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine("The property entered doesn't exist or was misspelled");
+                                }
+                            }
+                            else //User tried to update the id
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Cannot change primary key 'id'...");
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    confirmed = true;
+                }
+            }
+        }
+
+        //Deletes an entry in a given table
+        public static void Delete(object obj, string tableName)
+        {
+            DbAccess dbConn = new DbAccess();
+
+            bool confirmed = false;
+            while (!confirmed)
+            {
+                Console.Write("Please insert a unique identifier for the deletion: ");
+                string searchTxt = Console.ReadLine();
+
+                try
+                {
+                    //Gets a list of any entries where a field matches the searchTxt
+                    List<dynamic> entries = dbConn.GetList(obj, tableName, searchTxt);
+
+                    if (entries.Count() < 1) //No entries found
+                    {
+                        Console.Clear();
+                        Console.WriteLine("No entries matched the filter...");
+                    }
+                    else if (entries.Count() > 1) //More than 1 match - Not unique
+                    {
+                        Console.Clear();
+                        Display.WriteTable(entries);
+                        Console.WriteLine($"Your query returned {entries.Count()} entries...");
+                    }
+                    else //All good - a single match
+                    {
+                        confirmed = true;
+
+                        Console.Clear();
+                        Display.WriteTable(entries); //Shows the item about to be deleted
+
+                        string deleteAns = "";
+                        while (deleteAns != "y" && deleteAns != "n") //Gets a confirmation from the user
+                        {
+                            Console.Write("Are you sure you want to delete this entry? (Y/N): ");
+                            deleteAns = Console.ReadLine().ToLower();
+                        }
+
+                        if (deleteAns == "y") //Proceed with deletion
+                        {
+                            //Sets the new object's id to be the one from the selected entry for deletion
+                            var d = (IDictionary<string, object>)entries.FirstOrDefault();
+                            obj.GetType().GetProperty("id").SetValue(obj, d["id"]);
+
+                            //Tries to delete the item from the given table
+                            if (dbConn.DeleteObj(obj, tableName)) //Success
+                            {
+                                Console.WriteLine("Deletion successfull! Press any key to return to start menu...");
+                            }
+                            else //Failure
+                            {
+                                Console.WriteLine("Something went wrong when trying to delete this item.");
+                            }
+
+                            Console.Clear();
+                        }
+                        else //Deletion cancelled
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Deletion cancelled, press any key to go back to the start...");
+                        }
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    Console.ReadKey();
+                }
+            }
+        }
+        
         static void Main(string[] args)
         {
             /*
@@ -46,426 +261,345 @@ namespace Sydvest_Bo
             }
             */
 
+            ConsoleKey mainKey = new ConsoleKey();
 
-            DbAccess dbConn = new DbAccess();
-            //Display.WriteTable(test.GetList(new HouseOwner(), "HouseOwners", ""));
-
-            Console.WriteLine("Sydvest-Bo  - H1 Case\n");
-            Console.WriteLine("[Houses] [Owners] [Reservations] [Areas] [Seasons] [Inspectors] [Consultants]");
-
-            //Here it will save the input and make it automatic input lowercase 
-            string answer = Console.ReadLine().ToLower();
-            Console.Clear();
-            
-            if (answer == "houses")
+            while (mainKey != ConsoleKey.Escape)
             {
-                Console.WriteLine("[View] [Change] [Create] [Delete]");
-                string action = Console.ReadLine().ToLower();
+                Console.Clear();
+                Console.WriteLine("Press any key to start, Escape to exit...");
+                mainKey = Console.ReadKey().Key;
 
-                DataAccess.Houses dbHouses = new DataAccess.Houses();
+                Console.Clear();
 
-                if (action == "view")
+                if (mainKey != ConsoleKey.Escape)
                 {
-                    string searchRes = "";
-                    while (searchRes != "y" && searchRes != "n")
+                    Console.WriteLine("Sydvest-Bo  - H1 Case\n");
+                    Console.WriteLine("[Houses] [Owners] [Reservations] [Areas] [Seasons] [Inspectors] [Consultants]");
+
+                    //Here it will save the input and make it automatic input lowercase 
+                    string answer = Console.ReadLine().ToLower();
+                    Console.Clear();
+
+                    object controlObj;
+                    string targetTable;
+
+                    bool validAnswer = true;
+                    switch (answer)
                     {
-                        Console.Write("Would you like to search for a specific house? (Y/N): ");
-                        searchRes = Console.ReadLine().ToLower();
+                        case "houses":
+                            controlObj = new House();
+                            targetTable = "Houses";
+                            break;
+
+                        case "owners":
+                            controlObj = new HouseOwner();
+                            targetTable = "HouseOwners";
+                            break;
+
+                        case "reservations":
+                            controlObj = new Reservation();
+                            targetTable = "Reservations";
+                            break;
+
+                        case "areas":
+                            controlObj = new Area();
+                            targetTable = "Areas";
+                            break;
+
+                        case "seasons":
+                            controlObj = new Season();
+                            targetTable = "Seasons";
+                            break;
+
+                        case "inspectors":
+                            controlObj = new Inspector();
+                            targetTable = "Inspectors";
+                            break;
+
+                        case "consultants":
+                            controlObj = new Consultant();
+                            targetTable = "Consultants";
+                            break;
+
+                        case "weeks":
+                            controlObj = new Week();
+                            targetTable = "Weeks";
+                            break;
+
+                        default:
+                            controlObj = new object();
+                            targetTable = "";
+                            validAnswer = false;
+                            break;
                     }
-                    if (searchRes == "y")
+
+                    if (validAnswer)
                     {
-                        Console.Write("Insert the search text:");
-                        string searchTxt = Console.ReadLine();
-                        Display.WriteTable(dbConn.GetList(new House(), "Houses", searchTxt));
+                        Console.WriteLine("[View] [Create] [Update] [Delete]");
+                        string action = Console.ReadLine().ToLower();
+
+                        switch (action)
+                        {
+                            case "view":
+                                View(controlObj, targetTable);
+                                break;
+
+                            case "create":
+                                Create(controlObj, targetTable);
+                                break;
+
+                            case "update":
+                                Update(controlObj, targetTable);
+                                break;
+
+                            case "delete":
+                                Delete(controlObj, targetTable);
+                                break;
+                        }
                     }
-                    else if (searchRes == "n")
+                    else
                     {
-                        Display.WriteTable(dbConn.GetList(new House(),"Houses", ""));
+                        Console.WriteLine("No match, try again...");
                     }
+
+                    Console.ReadKey();
                 }
+            }
 
-                else if (action == "change")
-                {
-                    string ChangeAns = "";
-                    while (ChangeAns != "y" && ChangeAns != "n")
-                    {
-                        Console.Write("What will you change? ");
-                        ChangeAns = Console.ReadLine().ToLower();
-                    }
+            //if (answer == "houses")
+            //{
+            //    Console.WriteLine("[View] [Change] [Create] [Delete]");
+            //    string action = Console.ReadLine().ToLower();
 
-                    if (ChangeAns == "y")
-                    {
-                        if (ChangeAns == "address")
-                        {
-                            //Changing address
-                        }
-                        if (ChangeAns == "name")
-                        {
-                            //Changing house name
-                        }
-                        if (ChangeAns == "area")
-                        {
-                            //Changing area
-                        }
-                        if (ChangeAns == "owner")
-                        {
-                            //Changing house owner
-                        }
-                        if (ChangeAns == "inspector")
-                        {
-                            //Changing inspector
-                        }
-                        if (ChangeAns == "standard")
-                        {
-                            //Changing standard
-                        }
-                    }
-                    if (ChangeAns == "n")
-                    {
-                        //if user press n
-                    }
+            //    DataAccess.Houses dbHouses = new DataAccess.Houses();
 
-                }
+            //    if (action == "view")
+            //    {
+            //        View(new House(), "Houses");
+            //    }
 
-                else if (action == "create")
-                {
-                }
+            //    else if (action == "change")
+            //    {
+            //        string ChangeAns = "";
+            //        while (ChangeAns != "y" && ChangeAns != "n")
+            //        {
+            //            Console.Write("What will you change? ");
+            //            ChangeAns = Console.ReadLine().ToLower();
+            //        }
+
+            //        if (ChangeAns == "y")
+            //        {
+            //            if (ChangeAns == "address")
+            //            {
+            //                //Changing address
+            //            }
+            //            if (ChangeAns == "name")
+            //            {
+            //                //Changing house name
+            //            }
+            //            if (ChangeAns == "area")
+            //            {
+            //                //Changing area
+            //            }
+            //            if (ChangeAns == "owner")
+            //            {
+            //                //Changing house owner
+            //            }
+            //            if (ChangeAns == "inspector")
+            //            {
+            //                //Changing inspector
+            //            }
+            //            if (ChangeAns == "standard")
+            //            {
+            //                //Changing standard
+            //            }
+            //        }
+            //        if (ChangeAns == "n")
+            //        {
+            //            //if user press n
+            //        }
+
+            //    }
+
+            //    else if (action == "create")
+            //    {
+            //    }
                  
-                else if (action == "delete")
-                {
-                    string ChangeAns = "";
+            //    else if (action == "delete")
+            //    {
+            //        string ChangeAns = "";
 
-                    if (ChangeAns == "address")
-                    {
-                        //Changing address
-                    }
-                    else if (ChangeAns == "name")
-                    {
-                        //Changing house name
-                    }
-                }
-            }
-            //User wants to manipulate the house owners
-            else if (answer == "owners")
-            {
-                Console.WriteLine("[View] [Change] [Create] [Delete]");
-                string action = Console.ReadLine().ToLower();
+            //        if (ChangeAns == "address")
+            //        {
+            //            //Changing address
+            //        }
+            //        else if (ChangeAns == "name")
+            //        {
+            //            //Changing house name
+            //        }
+            //    }
+            //}
 
-                DataAccess.HouseOwners dbOwners = new DataAccess.HouseOwners();
+            //else if (answer == "owners")
+            //{
+            //    Console.WriteLine("[View] [Change] [Create] [Delete]");
+            //    string action = Console.ReadLine().ToLower();
 
-                if (action == "view") //Get a list over the matched house owners
-                {
-                    string searchRes = "";
-                    while (searchRes != "y" && searchRes != "n")
-                    {
-                        Console.Write("Would you like to search for a specific owner? (Y/N): ");
-                        searchRes = Console.ReadLine().ToLower();
-                    }
-                    if (searchRes == "y")
-                    {
-                        Console.Write("Insert the search text:");
-                        string searchTxt = Console.ReadLine();
-                        Display.WriteTable(dbConn.GetList(new HouseOwner(), "HouseOwners", searchTxt));
-                    }
-                    else if (searchRes == "n")
-                    {
-                        Display.WriteTable(dbConn.GetList(new HouseOwner(), "HouseOwners", ""));
-                    }
-                }
+            //    if (action == "view")
+            //    {
+            //        View(new HouseOwner(), "HouseOwners");
+            //    }
 
-                else if (action == "change") //Update a specific house owner
-                {
-                    bool confirmed = false;
-                    while (!confirmed)
-                    {
-                        Console.Write("Please insert a unique identifier for the owner: ");
-                        string searchTxt = Console.ReadLine();
+            //    else if (action == "change")
+            //    {
+            //        Update(new HouseOwner(), "houseOwners");
+            //    }
 
-                        try
-                        {
-                            //Gets a list of any entries where a field matches the searchTxt
-                            List<dynamic> entries = dbConn.GetList(new HouseOwner(), "HouseOwners", searchTxt);
+            //    else if (action == "create")
+            //    {
+            //        Create(new HouseOwner(), "HouseOwners");
+            //    }
 
-                            if (entries.Count() < 1) //No entries found
-                            {
-                                Console.WriteLine("No entries matched the search text...");
-                            }
-                            else if (entries.Count() > 1) //no single match
-                            {
-                                Console.Clear();
-                                Display.WriteTable(entries);
-                                Console.WriteLine("Your query returned 2 or more entries...");
-                            }
-                            else //All good - a single match
-                            {
-                                Console.Write("New Name: ");
-                                HouseOwner newObj = new HouseOwner { id = entries.FirstOrDefault().id, name = Console.ReadLine() };
-                                dbConn.ChangeObj(newObj, "HouseOwners");
-                                confirmed = true;
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e.Message);
-                            Console.ReadKey();
-                            confirmed = true;
-                        }
-                    }
-                }
+            //    else if (action == "delete")
+            //    {
+            //        Delete(new HouseOwner(), "HouseOwners");
+            //    }
 
-                else if (action == "create")
-                {
-                    Console.Write("Name: ");
-                    string ownerName = Console.ReadLine();
-
-                    HouseOwner newOwner = new HouseOwner { name = ownerName };
-                    dbConn.CreateObj(newOwner, "HouseOwners");
-                }
-
-                else if (action == "delete")
-                {
-                    bool confirmed = false;
-                    while (!confirmed)
-                    {
-                        Console.Write("Please insert a unique identifier for the owner: ");
-                        string searchTxt = Console.ReadLine();
-
-                        try
-                        {
-                            List<dynamic> entries = dbConn.GetList(new HouseOwner(), "HouseOwners", searchTxt);
-
-                            if (entries.Count() < 1) //No entries found
-                            {
-                                Console.WriteLine("No entries matched the search text...");
-                            }
-                            else if (entries.Count() > 1) //no single match
-                            {
-                                Console.Clear();
-                                Display.WriteTable(entries);
-                                Console.WriteLine("Your query returned 2 or more entries...");
-                            }
-                            else //All good - a single match
-                            {
-                                HouseOwner toBeDeleted = new HouseOwner { id = entries.FirstOrDefault().id };
-                                dbConn.DeleteObj(toBeDeleted, "HouseOwners");
-                                confirmed = true;
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e.Message);
-                            Console.ReadKey();
-                            confirmed = true;
-                        }
-                    }
-                }
-
-            }
-
-            //User wants to manipulate the areas
-            if (answer == "areas")
-            {
-                Console.WriteLine("[View] [Change] [Create] [Delete]");
-                string action = Console.ReadLine().ToLower();
-
-                if (action == "view")
-                {
-                    string searchRes = "";
-                    while (searchRes != "y" && searchRes != "n")
-                    {
-                        Console.Write("Would you like to search for a specific area? (Y/N): ");
-                        searchRes = Console.ReadLine().ToLower();
-                    }
-                    if (searchRes == "y")
-                    {
-                        //Make a search
-                    }
-                    else if (searchRes == "n")
-                    {
-                        //Show everything
-                    }
-                }
-
-                else if (action == "change")
-                {
-
-                }
-
-                else if (action == "create")
-                {
-
-                }
-
-                else if (action == "delete")
-                {
-
-                }
-
-            }
-
-            //User wants to manipulate the reservations
-            if (answer == "reservations")
-            {
-                Console.WriteLine("[View] [Change] [Create] [Delete]");
-                string action = Console.ReadLine().ToLower();
-
-                if (action == "view")
-                {
-                    string searchRes = "";
-                    while (searchRes != "y" && searchRes != "n")
-                    {
-                        Console.Write("Would you like to search for a specific reservation? (Y/N): ");
-                        searchRes = Console.ReadLine().ToLower();
-                    }
-                    if (searchRes == "y")
-                    {
-                        //Make a search
-                    }
-                    else if (searchRes == "n")
-                    {
-                        //Show everything
-                    }
-                }
-
-                else if (action == "change")
-                {
-
-                }
-
-                else if (action == "create")
-                {
-
-                }
-
-                else if (action == "delete")
-                {
-                    
-                }
-
-            }
-
-            //User wants to manipulate the seasons & prices
-            if (answer == "seasons")
-            {
-                Console.WriteLine("[View] [Change] [Create] [Delete]");
-                string action = Console.ReadLine().ToLower();
-
-                if (action == "view")
-                {
-                    string searchRes = "";
-                    while (searchRes != "y" && searchRes != "n")
-                    {
-                        Console.Write("Would you like to search for a specific season? (Y/N): ");
-                        searchRes = Console.ReadLine().ToLower();
-                    }
-                    if (searchRes == "y")
-                    {
-                        //Make a search
-                    }
-                    else if (searchRes == "n")
-                    {
-                        //Show everything
-                    }
-                }
-
-                else if (action == "change")
-                {
-
-                }
-
-                else if (action == "create")
-                {
-
-                }
-
-                else if (action == "delete")
-                {
-
-                }
-
-            }
-
-            //User wants to manipulate the seasons & prices
-            if (answer == "inspectors")
-            {
-                Console.WriteLine("[View] [Change] [Create] [Delete]");
-                string action = Console.ReadLine().ToLower();
-
-                if (action == "view")
-                {
-                    string searchRes = "";
-                    while (searchRes != "y" && searchRes != "n")
-                    {
-                        Console.Write("Would you like to search for a specific inspector? (Y/N): ");
-                        searchRes = Console.ReadLine().ToLower();
-                    }
-                    if (searchRes == "y")
-                    {
-                        //Make a search
-                    }
-                    else if (searchRes == "n")
-                    {
-                        //Show everything
-                    }
-                }
-
-                else if (action == "change")
-                {
-
-                }
-
-                else if (action == "create")
-                {
-
-                }
-
-                else if (action == "delete")
-                {
-
-                }
-
-            }
+            //}
             
-            //User wants to manipulate the seasons & prices
-            if (answer == "consultants")
-            {
-                Console.WriteLine("[View] [Change] [Create] [Delete]");
-                string action = Console.ReadLine().ToLower();
+            //else if (answer == "areas")
+            //{
+            //    Console.WriteLine("[View] [Update] [Create] [Delete]");
+            //    string action = Console.ReadLine().ToLower();
 
-                if (action == "view")
-                {
-                    string searchRes = "";
-                    while (searchRes != "y" && searchRes != "n")
-                    {
-                        Console.Write("Would you like to search for a specific consultant? (Y/N): ");
-                        searchRes = Console.ReadLine().ToLower();
-                    }
-                    if (searchRes == "y")
-                    {
-                        //Make a search
-                    }
-                    else if (searchRes == "n")
-                    {
-                        //Show everything
-                    }
-                }
+            //    if (action == "view")
+            //    {
+            //        View(new Area(), "Areas");
+            //    }
 
-                else if (action == "change")
-                {
+            //    else if (action == "update")
+            //    {
+            //        Update(new Area(), "Areas");
+            //    }
 
-                }
+            //    else if (action == "create")
+            //    {
+            //        Create(new Area(), "Areas");
+            //    }
 
-                else if (action == "create")
-                {
+            //    else if (action == "delete")
+            //    {
+            //        Delete(new Area(), "Areas");
+            //    }
 
-                }
+            //}
+            
+            //else if (answer == "reservations")
+            //{
+            //    Console.WriteLine("[View] [Change] [Update] [Delete]");
+            //    string action = Console.ReadLine().ToLower();
 
-                else if (action == "delete")
-                {
+            //    if (action == "view")
+            //    {
+            //        View(new Reservation(), "Reservations");
+            //    }
 
-                }
+            //    else if (action == "update")
+            //    {
+            //        Update(new Reservation(), "Reservations");
+            //    }
 
-            }
+            //    else if (action == "create")
+            //    {
+            //        Create(new Reservation(), "Reservations");
+            //    }
+
+            //    else if (action == "delete")
+            //    {
+            //        Delete(new Reservation(), "Reservations");
+            //    }
+
+            //}
+            
+            //else if (answer == "seasons")
+            //{
+            //    Console.WriteLine("[View] [Change] [Create] [Delete]");
+            //    string action = Console.ReadLine().ToLower();
+
+            //    if (action == "view")
+            //    {
+            //        View(new Season(), "Seasons");
+            //    }
+
+            //    else if (action == "update")
+            //    {
+            //        Update(new Season(), "Seasons");
+            //    }
+
+            //    else if (action == "create")
+            //    {
+            //        Create(new Season(), "Seasons");
+            //    }
+
+            //    else if (action == "delete")
+            //    {
+            //        Delete(new Season(), "Seasons");
+            //    }
+            //}
+            
+            //else if (answer == "inspectors")
+            //{
+            //    Console.WriteLine("[View] [Change] [Create] [Delete]");
+            //    string action = Console.ReadLine().ToLower();
+
+            //    if (action == "view")
+            //    {
+            //        View(new Inspector(), "Inspectors");
+            //    }
+
+            //    else if (action == "update")
+            //    {
+            //        Update(new Inspector(), "Inspectors");
+            //    }
+
+            //    else if (action == "create")
+            //    {
+            //        Create(new Inspector(), "Inspectors");
+            //    }
+
+            //    else if (action == "delete")
+            //    {
+            //        Delete(new Inspector(), "Inspectors");
+            //    }
+
+            //}
+
+            //else if (answer == "consultants")
+            //{
+            //    Console.WriteLine("[View] [Change] [Create] [Delete]");
+            //    string action = Console.ReadLine().ToLower();
+
+            //    if (action == "view")
+            //    {
+            //        View(new Consultant(), "Consultants");
+            //    }
+
+            //    else if (action == "update")
+            //    {
+            //        Update(new Consultant(), "Consultants");
+            //    }
+
+            //    else if (action == "create")
+            //    {
+            //        Create(new Consultant(), "Consultants");
+            //    }
+
+            //    else if (action == "delete")
+            //    {
+            //        Delete(new Consultant(), "Consultants");
+            //    }
+
+            //}
 
             Console.ReadKey();
         }   

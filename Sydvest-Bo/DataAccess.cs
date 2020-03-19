@@ -259,8 +259,6 @@ namespace Sydvest_Bo
                 try
                 {
                     var affectedRows = conn.Execute(sql, obj);
-                    Console.WriteLine($"Entry succesfully deleted!");
-                    Console.ReadKey();
                     return true;
                 }
                 catch (Exception e)
