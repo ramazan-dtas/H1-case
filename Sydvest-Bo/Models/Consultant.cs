@@ -10,5 +10,12 @@ namespace Sydvest_Bo.Models
     {
         public int id { get; set; }
         public string name { get; set; }
+
+        public string[] ToArray ()
+        {
+            string[] arr = { id.ToString(), name };
+            return arr;
+        }
     }
+
 }

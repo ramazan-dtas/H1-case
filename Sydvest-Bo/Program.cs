@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Sydvest_Bo.Models;
-using Sydvest_Bo.Classes;
+using System.Configuration;
 
 namespace Sydvest_Bo
 {
@@ -23,21 +23,6 @@ namespace Sydvest_Bo
         }
         static void Main(string[] args)
         {
-            string connetionString = @"Data Source=localhost;Initial Catalog=Sydvest Bo;User ID=DESKTOP-G8VN2QF\drama;Password=;Integrated Security=true";
-            SqlConnection conn = new SqlConnection(connetionString);
-            try
-            {
-                //DataAccess db = new DataAccess();
-
-                //db.InsertConsultant(new Consultant { name = "Josh Dun" });
-                //Display.WriteTable(DataAccess.Consultants.Get(""));
-            } 
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            Console.ReadKey();
             /*
             bool userAllowed = false;
 
@@ -60,18 +45,25 @@ namespace Sydvest_Bo
                 }
             }
             */
+
+
+            DbAccess dbConn = new DbAccess();
+            //Display.WriteTable(test.GetList(new HouseOwner(), "HouseOwners", ""));
+
             Console.WriteLine("Sydvest-Bo  - H1 Case\n");
-            Console.WriteLine("[Summer Houses] [House Owners] [Reservations] [Areas] [Seasons] [Inspectors]");
+            Console.WriteLine("[Houses] [Owners] [Reservations] [Areas] [Seasons] [Inspectors] [Consultants]");
 
             //Here it will save the input and make it automatic input lowercase 
             string answer = Console.ReadLine().ToLower();
             Console.Clear();
             
-            if (answer == "summer houses")
+            if (answer == "houses")
             {
                 Console.WriteLine("[View] [Change] [Create] [Delete]");
-
                 string action = Console.ReadLine().ToLower();
+
+                DataAccess.Houses dbHouses = new DataAccess.Houses();
+
                 if (action == "view")
                 {
                     string searchRes = "";
@@ -82,15 +74,17 @@ namespace Sydvest_Bo
                     }
                     if (searchRes == "y")
                     {
-                        //Make a search
+                        Console.Write("Insert the search text:");
+                        string searchTxt = Console.ReadLine();
+                        Display.WriteTable(dbConn.GetList(new House(), "Houses", searchTxt));
                     }
                     else if (searchRes == "n")
                     {
-                        //Show everything
+                        Display.WriteTable(dbConn.GetList(new House(),"Houses", ""));
                     }
                 }
-                
-                if (action == "change")
+
+                else if (action == "change")
                 {
                     string ChangeAns = "";
                     while (ChangeAns != "y" && ChangeAns != "n")
@@ -126,118 +120,144 @@ namespace Sydvest_Bo
                             //Changing standard
                         }
                     }
-                    if(ChangeAns == "n")
+                    if (ChangeAns == "n")
                     {
                         //if user press n
                     }
 
                 }
-                
-                if (action == "create")
-                {
-                    string ChangeAns = "";
-                    while (ChangeAns != "y" && ChangeAns != "n")
-                    {
-                        Console.Write("Will you create a house? ");
-                        ChangeAns = Console.ReadLine().ToLower();
-                    }
 
-                    if (ChangeAns == "y")
-                    {
-                        if (ChangeAns == "address")
-                        {
-                            //Changing address
-                        }
-                        if (ChangeAns == "name")
-                        {
-                            //Changing house name
-                        }
-                        if (ChangeAns == "area")
-                        {
-                            //Changing area
-                        }
-                        if (ChangeAns == "owner")
-                        {
-                            //Changing house owner
-                        }
-                        if (ChangeAns == "inspector")
-                        {
-                            //Changing inspector
-                        }
-                        if (ChangeAns == "standard")
-                        {
-                            //Changing standard
-                        }
-                    }
-                    if (ChangeAns == "n")
-                    {
-                        //if user press n
-                    }
+                else if (action == "create")
+                {
                 }
                  
-                if (action == "delete")
+                else if (action == "delete")
                 {
                     string ChangeAns = "";
-                    while (ChangeAns != "y" && ChangeAns != "n")
-                    {
-                        Console.Write("Will you delete a house? ");
-                        ChangeAns = Console.ReadLine().ToLower();
-                    }
 
-                    if (ChangeAns == "y")
+                    if (ChangeAns == "address")
                     {
-                        if (ChangeAns == "address")
-                        {
-                            //Changing address
-                        }
-                        if (ChangeAns == "name")
-                        {
-                            //Changing house name
-                        }
+                        //Changing address
                     }
-                    if (ChangeAns == "n")
+                    else if (ChangeAns == "name")
                     {
-                        //if user press n
+                        //Changing house name
                     }
                 }
             }
-            //User wants to manipulate the reservations
-            if (answer == "house owners")
+            //User wants to manipulate the house owners
+            else if (answer == "owners")
             {
                 Console.WriteLine("[View] [Change] [Create] [Delete]");
                 string action = Console.ReadLine().ToLower();
 
-                if (action == "view")
+                DataAccess.HouseOwners dbOwners = new DataAccess.HouseOwners();
+
+                if (action == "view") //Get a list over the matched house owners
                 {
                     string searchRes = "";
                     while (searchRes != "y" && searchRes != "n")
                     {
-                        Console.Write("Would you like to search for a specific house owner? (Y/N): ");
+                        Console.Write("Would you like to search for a specific owner? (Y/N): ");
                         searchRes = Console.ReadLine().ToLower();
                     }
                     if (searchRes == "y")
                     {
-                        //Make a search
+                        Console.Write("Insert the search text:");
+                        string searchTxt = Console.ReadLine();
+                        Display.WriteTable(dbConn.GetList(new HouseOwner(), "HouseOwners", searchTxt));
                     }
                     else if (searchRes == "n")
                     {
-                        //Show everything
+                        Display.WriteTable(dbConn.GetList(new HouseOwner(), "HouseOwners", ""));
                     }
                 }
 
-                if (action == "change")
+                else if (action == "change") //Update a specific house owner
                 {
+                    bool confirmed = false;
+                    while (!confirmed)
+                    {
+                        Console.Write("Please insert a unique identifier for the owner: ");
+                        string searchTxt = Console.ReadLine();
 
+                        try
+                        {
+                            //Gets a list of any entries where a field matches the searchTxt
+                            List<dynamic> entries = dbConn.GetList(new HouseOwner(), "HouseOwners", searchTxt);
+
+                            if (entries.Count() < 1) //No entries found
+                            {
+                                Console.WriteLine("No entries matched the search text...");
+                            }
+                            else if (entries.Count() > 1) //no single match
+                            {
+                                Console.Clear();
+                                Display.WriteTable(entries);
+                                Console.WriteLine("Your query returned 2 or more entries...");
+                            }
+                            else //All good - a single match
+                            {
+                                Console.Write("New Name: ");
+                                HouseOwner newObj = new HouseOwner { id = entries.FirstOrDefault().id, name = Console.ReadLine() };
+                                dbConn.ChangeObj(newObj, "HouseOwners");
+                                confirmed = true;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                            Console.ReadKey();
+                            confirmed = true;
+                        }
+                    }
                 }
 
-                if (action == "create")
+                else if (action == "create")
                 {
+                    Console.Write("Name: ");
+                    string ownerName = Console.ReadLine();
 
+                    HouseOwner newOwner = new HouseOwner { name = ownerName };
+                    dbConn.CreateObj(newOwner, "HouseOwners");
                 }
 
-                if (action == "delete")
+                else if (action == "delete")
                 {
+                    bool confirmed = false;
+                    while (!confirmed)
+                    {
+                        Console.Write("Please insert a unique identifier for the owner: ");
+                        string searchTxt = Console.ReadLine();
 
+                        try
+                        {
+                            List<dynamic> entries = dbConn.GetList(new HouseOwner(), "HouseOwners", searchTxt);
+
+                            if (entries.Count() < 1) //No entries found
+                            {
+                                Console.WriteLine("No entries matched the search text...");
+                            }
+                            else if (entries.Count() > 1) //no single match
+                            {
+                                Console.Clear();
+                                Display.WriteTable(entries);
+                                Console.WriteLine("Your query returned 2 or more entries...");
+                            }
+                            else //All good - a single match
+                            {
+                                HouseOwner toBeDeleted = new HouseOwner { id = entries.FirstOrDefault().id };
+                                dbConn.DeleteObj(toBeDeleted, "HouseOwners");
+                                confirmed = true;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                            Console.ReadKey();
+                            confirmed = true;
+                        }
+                    }
                 }
 
             }
@@ -266,17 +286,17 @@ namespace Sydvest_Bo
                     }
                 }
 
-                if (action == "change")
+                else if (action == "change")
                 {
 
                 }
 
-                if (action == "create")
+                else if (action == "create")
                 {
 
                 }
 
-                if (action == "delete")
+                else if (action == "delete")
                 {
 
                 }
@@ -307,17 +327,17 @@ namespace Sydvest_Bo
                     }
                 }
 
-                if (action == "change")
+                else if (action == "change")
                 {
 
                 }
 
-                if (action == "create")
+                else if (action == "create")
                 {
 
                 }
 
-                if (action == "delete")
+                else if (action == "delete")
                 {
                     
                 }
@@ -348,17 +368,17 @@ namespace Sydvest_Bo
                     }
                 }
 
-                if (action == "change")
+                else if (action == "change")
                 {
 
                 }
 
-                if (action == "create")
+                else if (action == "create")
                 {
 
                 }
 
-                if (action == "delete")
+                else if (action == "delete")
                 {
 
                 }
@@ -389,111 +409,65 @@ namespace Sydvest_Bo
                     }
                 }
 
-                if (action == "change")
+                else if (action == "change")
                 {
 
                 }
 
-                if (action == "create")
+                else if (action == "create")
                 {
 
                 }
 
-                if (action == "delete")
+                else if (action == "delete")
                 {
 
                 }
 
             }
-        }
-
-        class Sommerhus
-        {
-            public void Opret()
+            
+            //User wants to manipulate the seasons & prices
+            if (answer == "consultants")
             {
-                Console.WriteLine("oprettehus");
-                Console.ReadKey();
-                Console.Clear();
-            }
+                Console.WriteLine("[View] [Change] [Create] [Delete]");
+                string action = Console.ReadLine().ToLower();
 
-            public void Rette()
-            {
-                Console.WriteLine("rettehus");
-                Console.ReadKey();
-                Console.Clear();
-            }
-
-            public void Slette()
-            {
-                Console.WriteLine("slettehus");
-                Console.ReadKey();
-                Console.Clear();
-            }
-        }
-
-        class ResSommerhus
-        {
-            public void Opret()
-            {
-                //When user write zep code it will check if there is only numbers if there is not numbers it will come with error message
-                int Safety;
-                Console.WriteLine("Write you zep code ");
-                Safety = ReadLineInt();
-                //here will it check if the number is higher then 1000 or lower then 9999
-                if (Safety >= 1000 && Safety <= 9999)
+                if (action == "view")
                 {
-                    Console.WriteLine("Zep code is correct");
-                }
-                else
-                {
-                    Console.WriteLine("you zep code need to be between 1000 and 9999");
-                    Opret();
+                    string searchRes = "";
+                    while (searchRes != "y" && searchRes != "n")
+                    {
+                        Console.Write("Would you like to search for a specific consultant? (Y/N): ");
+                        searchRes = Console.ReadLine().ToLower();
+                    }
+                    if (searchRes == "y")
+                    {
+                        //Make a search
+                    }
+                    else if (searchRes == "n")
+                    {
+                        //Show everything
+                    }
                 }
 
-                Console.WriteLine("Write the adress ");
-                string adressAns = Console.ReadLine();
-
-
-                Console.ReadKey();
-                Console.Clear();
-            }
-
-            public void Rette()
-            {
-                Console.WriteLine("retteres");
-                Console.ReadKey();
-                Console.Clear();
-            }
-
-            public void Slette()
-            {
-                Console.WriteLine("sletter");
-                Console.ReadKey();
-                Console.Clear();
-            }
-        }
-
-        class Søgning
-        {
-            public void søg()
-            {
-                int svar2;
-                Console.WriteLine("write you zip number to search on a summer house at zip code you want to live in ");
-                //here i say integer svar2 has now the values in ReadLineInt inside him
-                //now it take the input from WriteLine controls if there is letters in it
-                svar2 = ReadLineInt();
-                //Here i saysv if the input is over 1000 and under 9999 it should go up 
-                if (svar2 >= 1000 && svar2 <= 9999)
+                else if (action == "change")
                 {
-                    Console.WriteLine("Jens er sej");
-                    
-                }
-                else
-                {
-                    Console.WriteLine("Try again");
 
                 }
+
+                else if (action == "create")
+                {
+
+                }
+
+                else if (action == "delete")
+                {
+
+                }
+
             }
-        }
+
+            Console.ReadKey();
+        }   
     }
 }

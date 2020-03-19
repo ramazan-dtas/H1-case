@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Sydvest_Bo.Models
 {
-    public class HouseOwner
+    public class Week
     {
-        public int id { get; set; }
-        public string name { get; set; }
+        public int number { get; set; }
+        public int seasonId { get; set; } //Reference to SeasonPrices table
 
         public string[] ToArray()
         {
-            string[] arr = { id.ToString(), name };
+            string[] arr = { number.ToString(), seasonId.ToString() };
             return arr;
         }
     }

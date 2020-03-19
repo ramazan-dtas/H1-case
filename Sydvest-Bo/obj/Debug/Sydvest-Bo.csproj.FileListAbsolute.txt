@@ -39,3 +39,5 @@ C:\Users\drama\OneDrive\Skrivebord\H1-case\Sydvest-Bo\obj\Debug\Sydvest-Bo.cspro
 C:\Users\drama\OneDrive\Skrivebord\H1-case\Sydvest-Bo\obj\Debug\Sydvest-Bo.csproj.CopyComplete
 C:\Users\drama\OneDrive\Skrivebord\H1-case\Sydvest-Bo\obj\Debug\Sydvest-Bo.exe
 C:\Users\drama\OneDrive\Skrivebord\H1-case\Sydvest-Bo\obj\Debug\Sydvest-Bo.pdb
+C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\bin\Debug\Newtonsoft.Json.dll
+C:\Users\lmat\Desktop\Personal Projects\H1 Case\Sydvest-Bo\bin\Debug\Newtonsoft.Json.xml

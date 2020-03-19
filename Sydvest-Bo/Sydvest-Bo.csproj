@@ -39,6 +39,9 @@
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.2.0.30\lib\net461\Dapper.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -50,19 +53,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\HouseOwner.cs" />
     <Compile Include="DataAccess.cs" />
     <Compile Include="Display.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="Models\Area.cs" />
     <Compile Include="Models\Consultant.cs" />
     <Compile Include="Models\House.cs" />
     <Compile Include="Models\HouseOwner.cs" />
+    <Compile Include="Models\Inspector.cs" />
+    <Compile Include="Models\Reservation.cs" />
+    <Compile Include="Models\Season.cs" />
+    <Compile Include="Models\Week.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Classes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
